@@ -12,9 +12,9 @@ function [dp_dt] = rhsFPE(timeStamp, pdfData, xdata, driftfcn, diffusionfcn, tim
 %   pdfData: the pdf at every spatial point defined by xdata, at the time
 %   point timeStamp. With the exception of the initial value, this should
 %   be calculated by the ode solver in MATLAB
-driftArray = generateDriftTerm(driftfcn, pdfData, xdata, timeStamp);        % Calculate the drift current flow
-diffArray = generateDiffusionTerm(diffusionfcn, pdfData, xdata, timeStamp); % Calculate the diffusion current flow
-flowArray = driftArray + diffArray;                                         % Calculate total current flow
+driftArray = generateDriftTerm(driftfcn, pdfData, xdata, timeStamp);        % Calculate the drift flux
+diffArray = generateDiffusionTerm(diffusionfcn, pdfData, xdata, timeStamp); % Calculate the diffusion flux
+flowArray = driftArray + diffArray;                                         % Calculate total flux
 tmpArray = zeros(size(xdata));                                              % Initialize temporary array for dp_dt
 indEnd = length(tmpArray);
 for ind=1:indEnd

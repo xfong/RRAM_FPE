@@ -1,5 +1,6 @@
 function [diffusionParam] = constantDiffusion(xdata, timeStamp)
 %CONSTANTDIFFUSION Summary of this function goes here
 %   Detailed explanation goes here
-diffusionParam = 1.0 .* ones(size(xdata));
+scaleVal = 1e6;
+diffusionParam = scaleVal .* ones(size(xdata));
 end

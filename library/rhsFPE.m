@@ -1,4 +1,4 @@
-function [dp_dt] = rhsFPE(timeStamp, pdfData, xdata, driftfcn, diffusionfcn)
+function [dp_dt] = rhsFPE(timeStamp, pdfData, xdata, driftfcn, diffusionfcn, timeScale)
 %RHSFPE This function calculates the RHS of the Fokker-Planck equation
 %during solution using ode solver in MATLAB
 %
@@ -15,7 +15,22 @@ function [dp_dt] = rhsFPE(timeStamp, pdfData, xdata, driftfcn, diffusionfcn)
 driftArray = generateDriftTerm(driftfcn, pdfData, xdata, timeStamp);        % Calculate the drift current flow
 diffArray = generateDiffusionTerm(diffusionfcn, pdfData, xdata, timeStamp); % Calculate the diffusion current flow
 flowArray = driftArray + diffArray;                                         % Calculate total current flow
-flowSpline = createSplineFromData(flowArray, xdata);                        % Generate spline to fit total current flow
-ppfit = fnder(flowSpline);                                                  % Calculate the divergence of the total current flow
-dp_dt = -1.0 .* ppval(ppfit, xdata);                                        % Calculate the RHS of the Fokker-Planck equation
+tmpArray = zeros(size(xdata));                                              % Initialize temporary array for dp_dt
+indEnd = length(tmpArray);
+for ind=1:indEnd
+    if (flowArray(ind) > 0)
+        tmpArray(ind) = tmpArray(ind) - flowArray(ind);
+        if (ind < indEnd)
+            tmpArray(ind+1) = tmpArray(ind+1) + flowArray(ind);
+        end
+    else
+        if (flowArray(ind) < 0)
+            tmpArray(ind) = tmpArray(ind) + flowArray(ind);
+            if (ind > 1)
+                tmpArray(ind-1) = tmpArray(ind-1) - flowArray(ind);
+            end
+        end
+    end
+end
+dp_dt = timeScale .* tmpArray;                                             % Calculate the RHS of the Fokker-Planck equation
 end

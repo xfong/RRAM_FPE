@@ -10,9 +10,7 @@ function [diffusionTerm] = generateDiffusionTerm(diffusionfcn,pdfData,xdata, tim
 %   point timeStamp. With the exception of the initial value, this should
 %   be calculated by the ode solver in MATLAB
 diffusionArray = feval(diffusionfcn, xdata, timeStamp);    % Determine diffusion parameter for every point in space (defined in xdata) at a particular time point
-pdfSpline = createSplineFromData(pdfData, xdata);          % Generate spline for pdf at current time point
-pdfprime = fnder(pdfSpline);                               % Generate function for spatial derivative of pdf parameter
-% Calculate the diffusion term using chain rule for -grad(D.p);
-ATmp = ppval(pdfprime,xdata);
+dx = xdata(2) - xdata(1);
+ATmp = gradient(pdfData,dx);
 diffusionTerm = - ATmp .* diffusionArray;
 end

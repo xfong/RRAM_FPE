@@ -1,4 +1,4 @@
-function [ tpoints, y_out, errEst, errMsg ] = abm23_stepper( dF, tspan, y0, atol, rtol )
+function [ tpoints, y_out, errEst, errMsg ] = abm23_stepper( dF, tspan, y0, dtinit, atol, rtol )
 %STEPPER Perform numerical time solution using AB2 predictor and
 %trapezoidal corrector
 %   Detailed explanation goes here
@@ -7,15 +7,27 @@ function [ tpoints, y_out, errEst, errMsg ] = abm23_stepper( dF, tspan, y0, atol
 if (length(tspan) == 1) % Given only end time point
     tstart = 0;
     tend = tspan;
-    dt0 = tend / 100;
+    if (dtinit > 0)
+        dt0 = dtinit;
+    else
+        dt0 = tend / 100;
+    end
     FixDt = 0;
 elseif (length(tspan) == 2) % Given start and end time points
     tstart = tspan(1);
     tend = tspan(2);
     if tstart == 0
-        dt0 = tend / 100;
+        if (dtinit > 0)
+            dt0 = dtinit;
+        else
+            dt0 = tend / 100;
+        end
     else
-        dt0 = tstart / 100;
+        if (dtinit > 0)
+            dt0 = dtinit;
+        else
+            dt0 = tstart / 100;
+        end
     end
     FixDt = 0;
 elseif (length(tspan) == 3) % Given start and end time points and interval between time points

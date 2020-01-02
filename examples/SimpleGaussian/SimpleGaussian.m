@@ -6,7 +6,7 @@ rho0 = ones(size(xpoints)) ./ gap_length;
 diffFcn = @constantDiffusion;
 driftFcn = @quadraticDrift;
 time_Final = 1e-18;
-[t, rho] = ode15s(@(t,y)rhsFPE(t, y, xpoints, driftFcn, diffFcn, 1e19), [0 time_Final], rho0);
+[t, rho] = abm23_stepper(@(t,y)rhsFPE(t, y, xpoints, driftFcn, diffFcn, 1e19), [0 time_Final], rho0, 1e-6, 1e-5);
 fh = figure(1);
 ax = axes();
 axis square;

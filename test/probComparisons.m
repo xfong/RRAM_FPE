@@ -1,8 +1,10 @@
 close all;clear all;clc;
 numPoints  = 1e7;
 normalDist = sort(random('Normal',0, 1, numPoints, 1));
+figCnt = 1;
 %% Weibull distributions
-figure(1)
+figure(figCnt)
+figCnt = figCnt + 1;
 subplot(3,2,1);
 weibullDistA = sort(random('Weibull',1, 0.1, numPoints, 1));
 axh1 = axis();
@@ -31,11 +33,45 @@ h5wbl  = plot(weibullDistA, normalDist,'b-','linewidth',2.0);
 subplot(3,2,6);
 weibullDistA = sort(random('Weibull',1, 50, numPoints, 1));
 axh6 = axis();
-h6wbl  = plot(weibullDistA, normalDist,'b-','linewidth',2.0);
+h6wbl  = plot(weibullDistA, normalDist,'bx','linewidth',2.0);
+%set(axh6, 'FontSize', 18);
+%% Weibull distributions
+figure(figCnt)
+figCnt = figCnt + 1;
+subplot(3,2,1);
+weibullDistA = sort(random('Weibull',1, 0.1, numPoints, 1));
+axh1 = axis();
+h1wbl  = probplot(weibullDistA);
+%set(axh1, 'FontSize', 18);
+subplot(3,2,2);
+weibullDistA = sort(random('Weibull',1, 0.5, numPoints, 1));
+axh2 = axis();
+h2wbl  = probplot(weibullDistA);
+%set(axh2, 'FontSize', 18);
+subplot(3,2,3);
+weibullDistA = sort(random('Weibull',1, 1, numPoints, 1));
+axh3 = axis();
+h3wbl  = probplot(weibullDistA);
+%set(axh3, 'FontSize', 18);
+subplot(3,2,4);
+weibullDistA = sort(random('Weibull',1, 5, numPoints, 1));
+axh4 = axis();
+h4wbl  = probplot(weibullDistA);
+%set(axh4, 'FontSize', 18);
+subplot(3,2,5);
+weibullDistA = sort(random('Weibull',1, 25, numPoints, 1));
+axh5 = axis();
+h5wbl  = probplot(weibullDistA);
+%set(axh5, 'FontSize', 18);
+subplot(3,2,6);
+weibullDistA = sort(random('Weibull',1, 50, numPoints, 1));
+axh6 = axis();
+h6wbl  = probplot(weibullDistA);
 %set(axh6, 'FontSize', 18);
 clearvars weibullDistA;
 %% Rayleigh distribution
-figure(2)
+figure(figCnt)
+figCnt = figCnt + 1;
 subplot(2,2,1);
 axh1 = axis();
 rayleighDistA = sort(random('Rayleigh', 0.25, numPoints, 1));
@@ -58,7 +94,8 @@ h4rayl  = plot(rayleighDistA, normalDist,'b-','linewidth',2.0);
 %set(axh4, 'FontSize', 18);
 clearvars rayleighDistA;
 %% Chi-Square distribution
-figure(3)
+figure(figCnt)
+figCnt = figCnt + 1;
 subplot(3,2,1);
 axh1 = axis();
 chi2DistA = sort(random('Chisquare', 1, numPoints, 1));
@@ -91,7 +128,8 @@ h6chi2  = plot(chi2DistA, normalDist,'b-','linewidth',2.0);
 %set(axh6, 'FontSize', 18);
 clearvars chi2DistA;
 %% Exponential distribution
-figure(4)
+figure(figCnt)
+figCnt = figCnt + 1;
 subplot(2,2,1);
 axh1 = axis();
 expDistA = sort(random('Exponential', 0.1, numPoints, 1));
@@ -114,7 +152,8 @@ h4exp  = plot(expDistA, normalDist,'b-','linewidth',2.0);
 %set(axh4, 'FontSize', 18);
 clearvars expDistA;
 %% Gamma distribution
-figure(5)
+figure(figCnt)
+figCnt = figCnt + 1;
 subplot(2,4,1);
 axh1 = axis();
 gamDistA = sort(random('Gamma', 1.0, 2.0, numPoints, 1));
@@ -157,7 +196,8 @@ h8gam  = plot(gamDistA, normalDist,'b-','linewidth',2.0);
 %set(axh4, 'FontSize', 18);
 clearvars gamDistA;
 %% Inverse Gaussian distribution
-figure(6)
+figure(figCnt)
+figCnt = figCnt + 1;
 subplot(2,2,1);
 axh1 = axis();
 iGauDistA = sort(random('InverseGaussian', 0.5, 0.1, numPoints, 1));
@@ -180,7 +220,8 @@ h4iGau  = plot(iGauDistA, normalDist,'b-','linewidth',2.0);
 %set(axh4, 'FontSize', 18);
 clearvars iGauDistA;
 %% Logistic distribution
-figure(7)
+figure(figCnt)
+figCnt = figCnt + 1;
 subplot(2,2,1);
 axh1 = axis();
 logDistA = sort(random('Logistic', 0, 0.1, numPoints, 1));

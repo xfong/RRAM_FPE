@@ -1,16 +1,20 @@
 from fipy import *
+import scipy.integrate as integrate
+import fipy.tools.dump as dumpster
 
 ## Set up simulation grid
-nx = 100e3;
+nx = 1e5;
 dx = 1.0e-3;
 L = nx * dx
 midPoint = L / 2
 mesh = Grid1D(nx=nx, dx=dx)
+dumpster.write(mesh, filename="grid_info.dat")
 
 ## The variable of interest
-phi = CellVariable(name="solution variable",
+phi = CellVariable(name="\Phi",
                    mesh=mesh,
                    value=1/L)
+dumpster.write(phi,filename="initial_phi.dat")
 
 ## Definition for scaling in time
 timeScaleFac = 1e6
@@ -52,34 +56,41 @@ eqI = TransientTerm() == (DiffusionTerm(coeff=D) + PowerLawConvectionTerm(coeff=
 ## initial few time steps
 timeStepDuration = 1.0e-18
 steps = 5
-viewer1 = Viewer(vars=(phi),
+viewer1 = Matplotlib1DViewer(vars=(phi),
                 datamin=0., datamax=1.5)
-viewer2 = Viewer(vars=(phi),
+viewer2 = Matplotlib1DViewer(vars=(phi),
                 datamin=0., datamax=1.5)
+t_i = 0.0
+
 if __name__ == '__main__':
     viewer1.plot()
+    input("Initial phi. Press <return> to proceed...")
 
 ## Loop to step through time
 for step in range(steps-1):
     print("Loop 1, Step Count")
     print(step)
     eqX.solve(var=phi, dt=timeStepDuration)
-    if __name__ == '__main__':
-        viewer1.plot()
+    t_i = t_i + timeStepDuration
 
 ## Switch over to implicit solver using
 ## larger time steps
 timeStepDuration = 1.0e-6
-steps = 200
+steps = 20
 
 ## Loop to step through time
 for step in range(steps-1):
+    dest_file = 'phi_transient_' + str(t_i) + 'sec.vtk'
+    if __name__ == '__main__':
+        viewer2.plot()
     print("Loop2 Step Count")
     print(step)
     eqI.solve(var=phi, dt=timeStepDuration)
-    if __name__ == '__main__':
-        viewer2.plot()
+    t_i = t_i + timeStepDuration
 
-## Pause so user has to enter input to terminate
+dumpster.write(phi,filename="final_phi.dat")
+
 if __name__ == '__main__':
-    input("Transient drift-diffusion. Press <return> to proceed...")
+    viewer2.plot()
+    input("Final phi. Press <return> to proceed...")
+

@@ -141,13 +141,15 @@ for n in range(num_steps):
         # Update current data point once error meets tolerance
         print('    ...accepted dt = ' + str(dt))
         rho_curr.assign(rho_next)
+        min_rho = np.array(rho_curr.vector()).min()
+        max_rho = np.array(rho_curr.vector()).max()
+        print('Min rho = ' + str(min_rho) + "; Max rho = " + str(max_rho))
         t = t_next
-        if (n%10 == 0):
+        if (n%50 == 0):
                 print('Saving VTK file...')
                 vtkfile << (rho_curr, t)
                 print('VTK file saved!')
 
 plot(rho_curr)
 plot(mesh)
-vtkfile << (rho_curr, t)
 plt.show()

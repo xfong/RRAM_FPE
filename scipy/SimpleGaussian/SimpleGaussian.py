@@ -13,14 +13,11 @@ vCoeff = 1e3
 dCoeff = 1e3
 tScale = 1e0
 
-'''
 plt.figure(1)
 plt.clf()
-fig, ax = plt.subplots(num=1)
-ax.plot(xGrid, rho_init, 'k--', label='Initial state')
-ax.legend(loc='best')
-'''
-plt.plot(xGrid, rho_init, 'k--')
+fig, ax = plt.subplots()
+ax.plot(xGrid, rho_init)
+##ax.legend(loc='best')
 input('Press <Enter> to continue...')
 
 '''

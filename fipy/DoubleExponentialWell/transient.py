@@ -6,7 +6,7 @@ import numpy as np
 def exp_velocity_func(xGrid, alpha_, c0, beta_, c1):
     tmp0 = alpha_ * (xGrid - c0)
     tmp1 = -1.0 * beta_ * (xGrid - c1)
-    velocity = beta_ * np.exp(tmp1) - alpha_ * np.exp(tmp0)
+    velocity = alpha_ * np.exp(tmp0) - beta_ * np.exp(tmp1)
     return velocity
 
 ## Set up simulation grid

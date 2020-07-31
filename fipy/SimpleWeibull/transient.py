@@ -5,14 +5,14 @@ import numpy as np
 
 ## The velocity function for Weibull distribution
 def weibull_velocity(xGrid, kParam, lambParam, diffCoeff):
-    tmp1 = np.power(xGrid, -1.)
+    tmp1 = (kParam - 1.) / xGrid
     tmp2 = np.power(xGrid, (kParam - 1.))
-    velocity = diffCoeff*((kParam - 1) * tmp1 - (kParam / np.power(lambParam, kParam)) * tmp2)
+    velocity = diffCoeff*((kParam / np.power(lambParam, kParam)) * tmp2 - tmp1)
     return velocity
 
 ## Set up simulation grid
-nx = 1e5;
-dx = 1.0e-3;
+nx = 2e5;
+dx = 1.0e-5;
 L = nx * dx
 midPoint = L / 2
 mesh = Grid1D(nx=nx, dx=dx)
@@ -38,7 +38,7 @@ lambParam = 1.
 kParam = 2.
 
 ## Drift term is linear in x-axis (gap length)
-cCoeff.setValue(cScaleValue * weibull_velocity(Xgrid + 0.5*dx, kParam, lambParam, D))
+cCoeff.setValue(cScaleValue * weibull_velocity(Xgrid + 0.5*dx, kParam, lambParam, D/1e3))
 
 ## Set boundary conditions (if required)
 #cCoeff.setValue(0., where=(Xgrid < dx) | (Xgrid > L - dx))
@@ -71,6 +71,7 @@ viewer1 = Matplotlib1DViewer(vars=(phi),
                 datamin=0., datamax=1.5)
 viewer2 = Matplotlib1DViewer(vars=(phi),
                 datamin=0., datamax=1.5)
+
 t_i = 0.0
 
 if __name__ == '__main__':

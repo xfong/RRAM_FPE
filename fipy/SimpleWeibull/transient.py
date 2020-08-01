@@ -7,7 +7,7 @@ import numpy as np
 def weibull_velocity(xGrid, kParam, lambParam, diffCoeff):
     tmp1 = (kParam - 1.) / xGrid
     tmp2 = np.power(xGrid, (kParam - 1.))
-    velocity = diffCoeff*((kParam / np.power(lambParam, kParam)) * tmp2 - tmp1)
+    velocity = diffCoeff*(tmp1 - (kParam / np.power(lambParam, kParam)) * tmp2)
     return velocity
 
 ## Set up simulation grid
@@ -58,9 +58,9 @@ cCoeff.setValue(cScaleValue * weibull_velocity(Xgrid + 0.5*dx, kParam, lambParam
 # solution
 
 ## Explicit form of Fokker-Planck Equation
-eqX = TransientTerm() == (ExplicitDiffusionTerm(coeff=D) + PowerLawConvectionTerm(coeff=cCoeff))
+eqX = TransientTerm() == (ExplicitDiffusionTerm(coeff=D) - PowerLawConvectionTerm(coeff=cCoeff))
 ## Implicit form of Fokker-Planck Equation
-eqI = TransientTerm() == (DiffusionTerm(coeff=D) + PowerLawConvectionTerm(coeff=cCoeff))
+eqI = TransientTerm() == (DiffusionTerm(coeff=D) - PowerLawConvectionTerm(coeff=cCoeff))
 
 ## Use extremely small time steps for the explicit
 ## solver to minimize spurious oscillations in the

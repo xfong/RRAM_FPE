@@ -27,7 +27,7 @@ cScaleValue = 1.0e0 * timeScaleFac
 cCoeff = FaceVariable(mesh=mesh, value=[1.0])
 Xgrid = mesh.faceCenters[0]
 ## Drift term is linear in x-axis (gap length)
-cCoeff.setValue(cScaleValue * (Xgrid - midPoint))
+cCoeff.setValue(cScaleValue * (midPoint - Xgrid))
 
 ## Set boundary conditions (if required)
 #cCoeff.setValue(0., where=(Xgrid < dx) | (Xgrid > L - dx))
@@ -47,9 +47,9 @@ cCoeff.setValue(cScaleValue * (Xgrid - midPoint))
 # solution
 
 ## Explicit form of Fokker-Planck Equation
-eqX = TransientTerm() == (ExplicitDiffusionTerm(coeff=D) + PowerLawConvectionTerm(coeff=cCoeff))
+eqX = TransientTerm() == (ExplicitDiffusionTerm(coeff=D) - PowerLawConvectionTerm(coeff=cCoeff))
 ## Implicit form of Fokker-Planck Equation
-eqI = TransientTerm() == (DiffusionTerm(coeff=D) + PowerLawConvectionTerm(coeff=cCoeff))
+eqI = TransientTerm() == (DiffusionTerm(coeff=D) - PowerLawConvectionTerm(coeff=cCoeff))
 
 ## Use extremely small time steps for the explicit
 ## solver to minimize spurious oscillations in the

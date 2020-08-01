@@ -6,7 +6,7 @@ import numpy as np
 def exp_velocity_func(xGrid, alpha_, c0, beta_, c1):
     tmp0 = alpha_ * (xGrid - c0)
     tmp1 = -1.0 * beta_ * (xGrid - c1)
-    velocity = alpha_ * np.exp(tmp0) - beta_ * np.exp(tmp1)
+    velocity = beta_ * np.exp(tmp1) - alpha_ * np.exp(tmp0)
     return velocity
 
 ## Set up simulation grid
@@ -59,9 +59,9 @@ cCoeff.setValue(cScaleValue * exp_velocity_func(Xgrid, fac_p, c_p, fac_n, c_n))
 # solution
 
 ## Explicit form of Fokker-Planck Equation
-eqX = TransientTerm() == (ExplicitDiffusionTerm(coeff=D) + PowerLawConvectionTerm(coeff=cCoeff))
+eqX = TransientTerm() == (ExplicitDiffusionTerm(coeff=D) - PowerLawConvectionTerm(coeff=cCoeff))
 ## Implicit form of Fokker-Planck Equation
-eqI = TransientTerm() == (DiffusionTerm(coeff=D) + PowerLawConvectionTerm(coeff=cCoeff))
+eqI = TransientTerm() == (DiffusionTerm(coeff=D) - PowerLawConvectionTerm(coeff=cCoeff))
 
 ## Use extremely small time steps for the explicit
 ## solver to minimize spurious oscillations in the
